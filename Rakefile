@@ -10,6 +10,11 @@ task :default do
   end
 end
 
+desc "Runs all tests for 'required'"
+task :test do
+  load 'tests/required_test.rb'
+end
+
 spec = Gem::Specification.new do |s| 
   s.name = "required"
   s.version = "0.1.0"

@@ -4,12 +4,19 @@ require 'shoulda'
 require 'lib/required'
 
 class RequiredTest < Test::Unit::TestCase
-  context "The non-recursive mechanism to require a group of files" do
+  
+  def reset_required_test_files
+    my_test_files = $".select { |r| r =~ /required_test/ }
+    my_test_files.each { |r| $".delete r }
+    $REQUIRED = []
+    # $REQUIRED global will be populated with filename of each file required
+  end
+
+  context "Non-recursive required" do
     setup do
+      reset_required_test_files
       @req_dir = "tests/required_test"
-      @required ||= []
-      @required += required @req_dir
-      # $REQUIRED global will be populated with filename of each file required
+      @required = required @req_dir
     end
 
     should "accurately report all files that have been required" do
@@ -57,17 +64,82 @@ class RequiredTest < Test::Unit::TestCase
     end
   end
 
-  context "The recursive mechanism to require a group of files" do
+  context "Non-recursive, exclude pattern required" do
     setup do
+      reset_required_test_files
       @req_dir = "tests/required_test"
-      @required ||= []
-      @required +=  required(@req_dir, true)
-      # $REQUIRED global will be populated with filename of each file required
+      @required = required(@req_dir, :exclude => /-2/)
+    end
+
+    should "require only ruby files matching an include pattern" do
+      %W(#{@req_dir}/required-2.rb
+         ).each {|f| assert ! $REQUIRED.include?(f),
+                 "#{f} unexpectedly found in #{$REQUIRED.inspect}"}
+    end
+
+    should "not require ruby files that do not match the include pattern" do
+      %W(#{@req_dir}/required-1.rb
+         #{@req_dir}/required\ space\ 3.rb
+         ).each {|f| assert $REQUIRED.include?(f),
+                 "#{f} not found in #{$REQUIRED.inspect}"}
+    end
+  end
+
+  context "Non-recursive, include pattern required" do
+    setup do
+      reset_required_test_files
+      @req_dir = "tests/required_test"
+      @required = required(@req_dir, :include => /-2/)
+    end
+
+    should "require only ruby files matching an include pattern" do
+      %W(#{@req_dir}/required-2.rb
+         ).each {|f| assert $REQUIRED.include?(f),
+                 "#{f} not found in #{$REQUIRED.inspect}"}
+    end
+
+    should "not require ruby files that do not match the include pattern" do
+      %W(#{@req_dir}/required-1.rb
+         #{@req_dir}/required\ space\ 3.rb
+         ).each {|f| assert ! $REQUIRED.include?(f),
+                 "#{f} unexcpectedly found in #{$REQUIRED.inspect}"}
+    end
+  end
+
+  context "Non-recursive, exclude and include pattern required" do
+    setup do
+      reset_required_test_files
+      @req_dir = "tests/required_test"
+      @required = required(@req_dir, {:include => /required-/, :exclude => /2/})
+    end
+
+    should "require only ruby files matching an include pattern" do
+      %W(#{@req_dir}/required-1.rb
+         ).each {|f| assert $REQUIRED.include?(f),
+                 "#{f} not found in #{$REQUIRED.inspect}"}
+    end
+
+    should "not require ruby files that do not match the include pattern" do
+      %W(#{@req_dir}/required-2.rb
+         #{@req_dir}/required\ space\ 3.rb
+         ).each {|f| assert ! $REQUIRED.include?(f),
+                 "#{f} unexcpectedly found in #{$REQUIRED.inspect}"}
+    end
+  end
+
+  context "Recursive required" do
+    setup do
+      reset_required_test_files
+      @req_dir = "tests/required_test"
+      @required =  required(@req_dir, :recurse => true)
     end
 
     should "accurately report all files that have been required" do
       assert_equal(
-          %W(#{@req_dir}/sub1/required-1.rb
+          %W(#{@req_dir}/required\ space\ 3.rb
+             #{@req_dir}/required-1.rb
+             #{@req_dir}/required-2.rb
+             #{@req_dir}/sub1/required-1.rb
              #{@req_dir}/sub1/required-2.rb
              #{@req_dir}/sub1/required\ space\ 3.rb
              #{@req_dir}/sub1/sub2/required-1.rb
