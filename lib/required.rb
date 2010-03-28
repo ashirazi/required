@@ -6,7 +6,7 @@ module Kernel
   # that were actually loaded in the order which they were loaded.
   #
   # Note: required files are loaded only once.
-  def require_all(directories, recurse=false)
+  def required(directories, recurse=false)
     loaded_files = []
     directories.each do |directory|
       next unless File.directory? directory
@@ -14,7 +14,7 @@ module Kernel
 
       next unless recurse
       sub_dirs = Dir["#{directory}/*"].select { |d| File.directory? d }
-      sub_dirs.each { |sub_dir| loaded_files << require_all(sub_dir, true) }
+      sub_dirs.each { |sub_dir| loaded_files << required(sub_dir, true) }
     end
     loaded_files.flatten
   end

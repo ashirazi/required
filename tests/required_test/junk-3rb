@@ -1,2 +1,2 @@
 $REQUIRED = [] unless defined? $REQUIRED
-$REQUIRED << __FILE__.sub(/.*(require_all_test)/, '\1')
+$REQUIRED << __FILE__.sub(/.*(tests)/, '\1')
