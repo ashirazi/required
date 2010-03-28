@@ -1,0 +1,79 @@
+= Required, a utility to require all files in a directory
+
+Required provides the ability to *require* all files within a <b>d</b>irectory,
+with an option for recursive descent. An array of all the files that were loaded
+for the first time are returned.
+
+== Quick start
+
+In your code, simply:
+
+    require 'required'
+    required "/path/to/dir"
+    required ["dir-1", "dir-2", "dir-3"]
+
+Or to recurse into subdirectories to require all files:
+
+    require 'required'
+    required "/path/to/dir", true
+
+== Installing with RubyGems
+
+A Gem of Required is available at gemcutter.org.  You can install it with:
+
+    gem install required
+
+== Running the tests
+
+Testing Required requires the shoulda testing framework:
+
+    gem install shoulda
+
+There is one rake-based test task:
+
+    rake test       runs all the tests
+
+== History
+
+* 2010-02-23: First public release 0.1.
+
+== Contact
+
+Git repository (send Git patches to the mailing list):
+* http://github.com/required
+
+== Thanks
+
+I would like to thank Ryan Wilcox for coming up with the initial idea and
+implementation of a convenience method for requiring everything in a directory
+for a project we work on.
+
+== Copyright
+
+Copyright (C) 2010 Arild Shirazi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+== Links
+
+Required:: <http://blog.codesherpas.com/>
+Required's Rubyforge project:: <http://rubyforge.org/projects/required>
+Official Required repository:: <http://github.com/required>
+
+Arild Shirazi:: <http://setup-a-personal-site-quick.com/>
+
