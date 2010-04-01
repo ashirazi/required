@@ -17,45 +17,40 @@ end
 
 spec = Gem::Specification.new do |s| 
   s.name = "required"
-  s.version = "0.1.1"
+  s.version = "0.1.2"
   s.author = "Arild Shirazi"
   s.email = "ashirazi@codesherpas.com"
   s.homepage = "http://blog.codesherpas.com/"
   s.platform = Gem::Platform::RUBY
-  s.summary = "Provides the ability to 'require' many or all files within " +
-      "directories, using a simple statement."
+  s.summary = "Required is a utility to require all files in a directory."
   s.description = <<DESCRIPTION
-Required, a utility to require all files in a directory
-Required provides the ability to require all files within a directory, with options for file inclusion/exclusion based on pattern matching, as well as recursive descent. An array of all the files that were loaded (‘require’ only loads a file the first time) are returned.
+<p>Required is a utility to require all files in a directory.</p>
+<p>
+  Why would one want to require a whole bunch of files at once? I have used this
+  gem on 2 projects to:
+</p>
+<ul>
+  <li>require dozens of jar files when working on a JRuby project</li>
+  <li>pull in all files before running code coverage (rcov), to find code that
+      is otherwise dead/untouched</li>
+</ul>
 
-Quick start
-First pull in the ‘required’ module:
+<p>
+  Options for <strong>required</strong> include the ability to recursively
+  descend through subdirectories, include/exclude files based on pattern
+  matching, and to specify the order of requires based on filename.  An array of
+  all the files that were loaded is returned.
+</p>
 
-    require 'required'
-To pull in all ruby files in a directory (this excludes subdirectories):
+<code>require 'required'
+required "some/path/to/dir"</code>
 
-    required "some/path/to/dir"
-Same as before, but require the files in reverse alphanumeric order:
-
-    required "some/path/to/dir", :sort => lambda { |x, y| y <=> x}
-To pull in files from multiple directories:
-
-    required ["some/path/to/dir", "another/path/another/dir"]
-Or to recurse through subdirectories, requiring all files along the way:
-
-    required "lib", {:recurse => true}
-Same as before, but exclude ruby files tagged as "_old":
-
-    required "lib", {:recurse => true, :exclude => /_old/}
-    # Will not require "lib/extensions/string_old.rb"
-Same as before, but only require ruby files tagged with "_new":
-
-    required "lib", {:recurse => true, :include => /_new/}
+<p>See the README for quick usage instructions</p>
 DESCRIPTION
   s.files = FileList["lib/**/*"].to_a
   s.require_path = "lib"
   # s.autorequire = "name"
-  s.test_files = FileList["test/**/*test.rb"].to_a
+  s.test_files = FileList["tests/*test.rb"].to_a
   s.has_rdoc = true
   s.extra_rdoc_files = ["README"]
   # s.add_dependency("dependency", ">= 0.x.x")
