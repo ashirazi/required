@@ -1,21 +1,39 @@
 = Required, a utility to require all files in a directory
 
-Required provides the ability to *require* all files within a <b>d</b>irectory,
-with an option for recursive descent. An array of all the files that were loaded
-for the first time are returned.
+Required provides the ability to <b>require</b> all files within a
+<b>d</b>irectory, with options for file inclusion/exclusion based on pattern
+matching, as well as recursive descent. An array of all the files that were
+loaded ('require' only loads a file the first time) are returned.
 
 == Quick start
 
-In your code, simply:
-
+First pull in the 'required' module:
     require 'required'
-    required "/path/to/dir"
-    required ["dir-1", "dir-2", "dir-3"]
 
-Or to recurse into subdirectories to require all files:
+To pull in all ruby files in a directory (this excludes subdirectories):
 
-    require 'required'
-    required "/path/to/dir", true
+    required "some/path/to/dir"
+
+Same as before, but require the files in reverse alphanumeric order:
+
+    required "some/path/to/dir", :sort => lambda { |x, y| y <=> x}
+
+To pull in files from multiple directories:
+
+    required ["some/path/to/dir", "another/path/another/dir"]
+
+Or to recurse through subdirectories, requiring all files along the way:
+
+    required "lib", {:recurse => true}
+
+Same as before, but exclude ruby files tagged as "_old":
+
+    required "lib", {:recurse => true, :exclude => /_old/}
+    # Will not require "lib/extensions/string_old.rb"
+
+Same as before, but only require ruby files tagged with "_new":
+
+    required "lib", {:recurse => true, :include => /_new/}
 
 == Installing with RubyGems
 

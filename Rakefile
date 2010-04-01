@@ -22,8 +22,8 @@ spec = Gem::Specification.new do |s|
   s.email = "ashirazi@codesherpas.com"
   s.homepage = "http://blog.codesherpas.com/"
   s.platform = Gem::Platform::RUBY
-  s.summary = "Provides the ability to require all files within a directory, " +
-      "with an option for recursive descent."
+  s.summary = "Provides the ability to require many or all files within one " +
+      "or more directories, with a simple statement"
   s.files = FileList["lib/**/*"].to_a
   s.require_path = "lib"
   # s.autorequire = "name"
