@@ -4,11 +4,11 @@ module Kernel
   # `require` all ruby files found.  Returns an array of files that were
   # actually loaded in the order which they were loaded.
   # Available options:
-  #   :recurse => [true|false]         # Descend into subdirectories or not
-  #   :include => /filename_pattern/   # Only require files matching this regex
-  #   :exclude => /filename_pattern/   # Don't require files matching this regex
+  #   :recurse => true       # Descend into subdirectories (default is false)
+  #   :include => /pattern/  # Only require files with names matching this regex
+  #   :exclude => /pattern/  # Don't require files matching this regex
   #   :sort => lambda { |x, y| y <=> x }
-  #                # Specify a custom sort order for files within each directory
+  #                # Specify a custom file sort order within each directory
   #
   # Note: required files are loaded only once.
   def required(directories, options={})
