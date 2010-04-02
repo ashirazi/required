@@ -17,35 +17,31 @@ end
 
 spec = Gem::Specification.new do |s| 
   s.name = "required"
-  s.version = "0.1.2"
+  s.version = "0.1.3"
   s.author = "Arild Shirazi"
   s.email = "ashirazi@codesherpas.com"
-  s.homepage = "http://blog.codesherpas.com/"
+  s.homepage = "http://github.com/ashirazi/required"
   s.platform = Gem::Platform::RUBY
   s.summary = "Required is a utility to require all files in a directory."
   s.description = <<DESCRIPTION
-<p>Required is a utility to require all files in a directory.</p>
-<p>
-  Why would one want to require a whole bunch of files at once? I have used this
-  gem on 2 projects to:
-</p>
-<ul>
-  <li>require dozens of jar files when working on a JRuby project</li>
-  <li>pull in all files before running code coverage (rcov), to find code that
-      is otherwise dead/untouched</li>
-</ul>
+Required is a utility to require all files in a directory.
 
-<p>
-  Options for <strong>required</strong> include the ability to recursively
-  descend through subdirectories, include/exclude files based on pattern
-  matching, and to specify the order of requires based on filename.  An array of
-  all the files that were loaded is returned.
-</p>
+Why would one want to require a whole bunch of files at once? I have used this
+gem on 2 projects to:
+  - require dozens of jar files when working on a JRuby project
+  - pull in all files before running code coverage (rcov), to find code that
+      is otherwise dead/untouched
 
-<code>require 'required'
-required "some/path/to/dir"</code>
+Options for required include the ability to recursively descend through
+subdirectories, include/exclude files based on pattern matching, and to specify
+the order of requires based on filename.  An array of all the files that were
+loaded is returned.
 
-<p>See the README for quick usage instructions</p>
+Quick example:
+  require 'required'
+  required "some/path/to/dir"
+
+See the README for more examples, and description of options.
 DESCRIPTION
   s.files = FileList["lib/**/*"].to_a
   s.require_path = "lib"
