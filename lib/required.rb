@@ -29,9 +29,17 @@ module Kernel
 
   if RUBY_PLATFORM == 'java'
     # Adds the given directory to the Java Classpath
-    def append_classpathd(directory)
+    def append_to_classpath(directory)
+      $CLASSPATH ||= []
       dir = File.expand_path directory
       $CLASSPATH << "file:///#{dir}/"
+      dir
+    end
+    # Adds the given directory to the Java Classpath
+    def prepend_to_classpath(directory)
+      $CLASSPATH ||= []
+      dir = File.expand_path directory
+      $CLASSPATH.insert(0,"file:///#{dir}/")
       dir
     end
   end
