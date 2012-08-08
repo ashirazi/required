@@ -16,7 +16,7 @@ module Kernel
     loaded_files = []
     directories.each do |directory|
       next unless File.directory? directory
-      loaded_files << require_within(directory, options)
+      loaded_files << require_files_in(directory, options)
 
       next unless options[:recurse]
       sub_dirs = Dir["#{directory}/*"].select { |d| File.directory? d }
@@ -27,15 +27,29 @@ module Kernel
     loaded_files.flatten
   end
 
+  if RUBY_PLATFORM == 'java'
+    # Adds the given directory to the Java Classpath
+    def append_classpathd(directory)
+      dir = File.expand_path directory
+      $CLASSPATH << "file:///#{dir}/"
+      dir
+    end
+  end
+
   private
-  def require_within(directory, opt)
+  def require_files_in(directory, opt)
     next unless File.directory? directory
     loaded_files = []
-    ruby_files = Dir["#{directory}/*.rb"].reject{ |f| File.directory? f }
-    ruby_files = ruby_files.select { |f| f =~ opt[:include] } if opt[:include]
-    ruby_files = ruby_files.reject { |f| f =~ opt[:exclude] } if opt[:exclude]
-    opt[:sort] ? ruby_files.sort!(&opt[:sort]) : ruby_files.sort!
-    ruby_files.each { |file| loaded_files << file if require file }
+    # Ruby will require .rb files, Jruby will require .jar also
+    files = Dir["#{directory}/*.{rb,jar}"].reject{ |f| File.directory? f }
+    files.reject! { |f| f =~ /\.jar$/ } unless RUBY_PLATFORM == 'java'
+    # Use selection criteria passed in by users
+    files = files.select { |f| f =~ opt[:include] } if opt[:include]
+    files.reject! { |f| f =~ opt[:exclude] } if opt[:exclude]
+    # Needed - Dir[] gives different file ordering on different platforms
+    opt[:sort] ? files.sort!(&opt[:sort]) : files.sort!
+    # Require the file! Report it only if it has not already been loaded
+    files.each { |file| loaded_files << File.expand_path(file) if require file }
     loaded_files
   end
 
